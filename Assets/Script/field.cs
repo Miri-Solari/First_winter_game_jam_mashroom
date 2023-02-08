@@ -10,12 +10,14 @@ public class field : MonoBehaviour
     private Tilemap map;
     public int Money;
     public GameObject[] Mushrom;
-    private List<Vector3Int> AllMushrom = new List<Vector3Int>();
+    public static List<Vector3Int> AllMushrom = new List<Vector3Int>();
+    public static List<GameObject> AllMushromGameObject = new List<GameObject>();
     private Camera mainCamera;
     private bool BuildThisClick=false;
     public int[] MoneyToBuild ;
     private Vector3Int CellToBuild;
     private bool readyToBuild = false;
+    public Dictionary<GameObject, int> _itemsCount = new Dictionary<GameObject, int>();
     void Start()
     {
         map = GameObject.Find("Tilemap").GetComponent<Tilemap>();
@@ -45,7 +47,7 @@ public class field : MonoBehaviour
         if (Money >= MoneyToBuild[index] && readyToBuild == true)
         {
             readyToBuild = false;
-            Instantiate(Mushrom[index], new Vector3 (map.CellToWorld(CellToBuild).x+1, map.CellToWorld(CellToBuild).y+1, -1), Quaternion.identity);
+            AllMushromGameObject.Add(Instantiate(Mushrom[index], new Vector3 (map.CellToWorld(CellToBuild).x+1.1f, map.CellToWorld(CellToBuild).y+1.1f, -1), Quaternion.identity));
             AllMushrom.Add(CellToBuild);
             Money -= MoneyToBuild[index];
             map.SetColor(CellToBuild, Color.white);
