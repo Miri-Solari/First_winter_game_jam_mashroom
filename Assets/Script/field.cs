@@ -3,21 +3,21 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Tilemaps;
+using TMPro;
 
 public class field : MonoBehaviour
 {
     public TileBase BasicTile;
     private Tilemap map;
-    public int Money;
+    public TMP_Text Money_output;
+    public static float Money=500;
     public GameObject[] Mushrom;
     public static List<Vector3Int> AllMushrom = new List<Vector3Int>();
     public static List<GameObject> AllMushromGameObject = new List<GameObject>();
     private Camera mainCamera;
-    private bool BuildThisClick=false;
     public int[] MoneyToBuild ;
     private Vector3Int CellToBuild;
     private bool readyToBuild = false;
-    public Dictionary<GameObject, int> _itemsCount = new Dictionary<GameObject, int>();
     void Start()
     {
         map = GameObject.Find("Tilemap").GetComponent<Tilemap>();
@@ -26,6 +26,7 @@ public class field : MonoBehaviour
 
     void Update()
     {
+        Money_output.text ="V" + Money;
         if (Input.GetMouseButtonDown(0))
         {
             if (readyToBuild == false)
@@ -55,7 +56,7 @@ public class field : MonoBehaviour
     }
    public void CancelClick()
    {
-        BuildThisClick = false;
+        readyToBuild = false;
         map.SetColor(CellToBuild, Color.white);
    }
 }
