@@ -218,8 +218,25 @@ public class Mushrom : MonoBehaviour
         {
             ChangeIncome();
             field.Money += Pref;
+            field.Money -= Prov;
             yield return new WaitForSeconds(3);
             Debug.Log(Pref);
+        }
+    }
+    void EndGame()
+    {
+        if (field.Money <= -1)
+        {
+            Debug.Log("Game Over!");
+            QuitGame();
+        }
+    }
+    void Won()
+    {
+        if (field.Money >= 100)
+        {
+            Debug.Log("Won!!!");
+            QuitGame();
         }
     }
     void Start()
@@ -227,6 +244,10 @@ public class Mushrom : MonoBehaviour
         map = GameObject.Find("Tilemap").GetComponent<Tilemap>();
         ChangeIncome();
         StartCoroutine(PrefPerSecond());
+    }
+    void QuitGame()
+    {
+        Application.Quit();
     }
     void GetPositionArround(Vector3Int startPosition)
     {
