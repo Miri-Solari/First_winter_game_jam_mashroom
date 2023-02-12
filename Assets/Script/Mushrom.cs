@@ -30,7 +30,7 @@ public class Mushrom : MonoBehaviour
         if (gameObject.tag == "gamma")
         {
             Pref = 0;
-            Prov = 7;
+            Prov = 5;
         }
         if (gameObject.tag == "beta-male")
         {
@@ -40,7 +40,7 @@ public class Mushrom : MonoBehaviour
         if (gameObject.tag == "beta-fem")
         {
             Pref = 0;
-            Prov = 7;
+            Prov = 5;
         }
     }
     void ChangeIncome()
