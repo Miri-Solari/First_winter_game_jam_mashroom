@@ -10,7 +10,7 @@ public class field : MonoBehaviour
     public TileBase BasicTile;
     private Tilemap map;
     public TMP_Text Money_output;
-    public static float Money=70;
+    public static float Money=170;
     public GameObject[] Mushrom;
     public static List<Vector3Int> AllMushrom = new List<Vector3Int>();
     public static List<GameObject> AllMushromGameObject = new List<GameObject>();
@@ -29,23 +29,22 @@ public class field : MonoBehaviour
         Money_output.text ="Money " + Money;
         if (Input.GetMouseButtonDown(0))
         {
-            if (readyToBuild == false)
-            {
+
                 Vector3 MousePosition = mainCamera.ScreenToWorldPoint(Input.mousePosition); 
                 Vector3Int cellPosition = map.WorldToCell(MousePosition);
                 if(map.GetTile(cellPosition) == BasicTile)
                 {
+                    map.SetColor(CellToBuild, Color.white);
                     CellToBuild = cellPosition;
                     map.SetTileFlags(cellPosition, TileFlags.None);
-                    map.SetColor(cellPosition, Color.red);
-                    readyToBuild = true;
+                    map.SetColor(cellPosition, Color.gray);
                 }
-            }
+            
         }
     }
     public void ButtonBuild(int index)
     {
-        if (Money >= MoneyToBuild[index] && readyToBuild == true && AllMushrom.Contains(CellToBuild) == false  )
+        if (Money >= MoneyToBuild[index] && AllMushrom.Contains(CellToBuild) == false && map.GetTile(CellToBuild) == BasicTile)
         {
             readyToBuild = false;
             AllMushromGameObject.Add(Instantiate(Mushrom[index], new Vector3 (map.CellToWorld(CellToBuild).x+1.1f, map.CellToWorld(CellToBuild).y+1.1f, -1), Quaternion.identity));
@@ -68,10 +67,13 @@ public class field : MonoBehaviour
             for (int io = 0; io < AllMushrom.Count; io++)
             {
                 if (AllMushrom[io] == CellToBuild)
+                {
                     numberOfGameObject = io;
-                break;
+                    break;
+                }
             }
             readyToBuild = false;
+            Debug.Log(numberOfGameObject); Debug.Log(AllMushrom.Count);
             AllMushrom.Remove(CellToBuild);
             map.SetColor(CellToBuild, Color.white);
             if (AllMushromGameObject[numberOfGameObject].tag == "sigma")
@@ -98,9 +100,23 @@ public class field : MonoBehaviour
             {
                 Money += 36;
             }
+            
             Destroy(AllMushromGameObject[numberOfGameObject]);
+            AllMushromGameObject.Remove(AllMushromGameObject[numberOfGameObject]);
         }
 
     }
+    public void red()
+    {
+        map.SetColor(CellToBuild, Color.red);
+        CellToBuild = new Vector3Int(99,0,0);
+    }
+
+    public void green()
+    {
+        map.SetColor(CellToBuild, Color.green);
+        CellToBuild = new Vector3Int(99, 0, 0);
+    }
+
 }
         

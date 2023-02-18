@@ -59,154 +59,14 @@ public class Mushrom : MonoBehaviour
                 {
                     if (field.AllMushrom == AroundPosition)
                         numberOfGameObject = io;
-                        break;
+                    break;
                 }
                 CheckTupeOfMushrum = field.AllMushromGameObject[numberOfGameObject];
+
                 if (field.AllMushromGameObject[numberOfGameObject].tag == "sigma")
-                {
-                    if (gameObject.tag == "alpha")
-                    {
-                        Prov *= 1.15f;
-                    }
-                    if (gameObject.tag == "omega")
-                    {
-                        Pref *= 0.9f;
-                        Prov *= 1.05f;
-                    }
-                    if (gameObject.tag == "beta-male")
-                    {
-                        Prov *= 1.15f;
-                    }
-                    if (gameObject.tag == "beta-fem")
-                    {
-                        Pref *= 0.95f;
-                        Prov *= 1.05f;
-                    }
-                }
-                if (field.AllMushromGameObject[numberOfGameObject].tag == "alpha")
-                {
+                { }
 
-                    if (gameObject.tag == "omega")
-                    {
-                        Pref *= 0.85f;
-                    }
-                    if (gameObject.tag == "beta-male")
-                    {
-                        Prov *= 1.1f;
-                    }
-                    if (gameObject.tag == "beta-fem")
-                    {
-                        Pref *= 1.1f;
-                        Prov *= 1.05f;
-                    }
-                }
-                if (field.AllMushromGameObject[numberOfGameObject].tag == "omega")
-                {
-
-                    if (gameObject.tag == "alpha")
-                    {
-                        Prov *= 0.83f;
-                    }
-                    if (gameObject.tag == "omega")
-                    {
-                        Pref *= 1.3f;
-                    }
-                    if (gameObject.tag == "gamma")
-                    {
-                        Prov *= 0.85f;
-                    }
-                    if (gameObject.tag == "beta-male")
-                    {
-                        Prov *= 1.35f;
-                    }
-                    if (gameObject.tag == "beta-fem")
-                    {
-                        Pref *= 1.05f;
-                    }
-                }
-                if (field.AllMushromGameObject[numberOfGameObject].tag == "gamma")
-                {
-                    Debug.Log("Test1");
-                    if (gameObject.tag == "sigma")
-                    {
-                        Prov *= 1.1f;
-                        Pref *= 1.25f;
-                    }
-                    if (gameObject.tag == "alpha")
-                    {
-                        Prov *= 0.9f;
-                    }
-                    if (gameObject.tag == "omega")
-                    {
-                        Pref *= 1.4f;
-                        Prov *= 1.55f;
-                    }
-                    if (gameObject.tag == "gamma")
-                    {
-                        Prov *= 1.5f;
-                        Debug.Log("Test2");
-                    }
-                    if (gameObject.tag == "beta-male")
-                    {
-                        Prov *= 1.15f;
-                    }
-                    if (gameObject.tag == "beta-fem")
-                    {
-                        Prov *= 1.45f;
-                        Pref *= 1.55f;
-                    }
-                }
-                if (field.AllMushromGameObject[numberOfGameObject].tag == "beta-fem")
-                {
-                    if (gameObject.tag == "alpha")
-                    {
-                        Prov *= 1.1f;
-                    }
-                    if (gameObject.tag == "omega")
-                    {
-                        Pref *= 0.85f;
-                    }
-                    if (gameObject.tag == "gamma")
-                    {
-                        Prov *= 1.05f;
-                    }
-                    if (gameObject.tag == "beta-male")
-                    {
-                        Prov *= 1.15f;
-                    }
-                    if (gameObject.tag == "beta-fem")
-                    {
-                        Prov *= 0.9f;
-                        Pref *= 1.2f;
-                    }
-                }
-                if (field.AllMushromGameObject[numberOfGameObject].tag == "beta-male")
-                {
-                    if (gameObject.tag == "alpha")
-                    {
-                        Prov *= 1.07f;
-                    }
-                    if (gameObject.tag == "omega")
-                    {
-                        Pref *= 0.75f;
-                        Prov *= 1.15f;
-                    }
-                    if (gameObject.tag == "gamma")
-                    {
-                        Prov *= 1.15f;
-                    }
-                    if (gameObject.tag == "beta-male")
-                    {
-                        Prov *= 1.15f;
-                    }
-                    if (gameObject.tag == "beta-fem")
-                    {
-                        Prov *= 1.1f;
-                        Pref *= 1.2f;
-                    }
-                }
             }
-            
         }
     }
 
@@ -217,26 +77,17 @@ public class Mushrom : MonoBehaviour
         while (true)
         {
             ChangeIncome();
-            field.Money += Pref;
-            field.Money -= Prov;
+            field.Money += Mathf.Round(Pref);
+            field.Money -= Mathf.Round(Prov);
             yield return new WaitForSeconds(3);
             Debug.Log(Pref);
         }
     }
-    void EndGame()
+    private void Update()
     {
-        if (field.Money <= -1)
+        if (field.Money >= 1000)
         {
-            Debug.Log("Game Over!");
-            QuitGame();
-        }
-    }
-    void Won()
-    {
-        if (field.Money >= 100)
-        {
-            Debug.Log("Won!!!");
-            QuitGame();
+            GameObject.Find("Win").SetActive(true);
         }
     }
     void Start()
