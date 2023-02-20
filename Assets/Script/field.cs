@@ -78,27 +78,27 @@ public class field : MonoBehaviour
             map.SetColor(CellToBuild, Color.white);
             if (AllMushromGameObject[numberOfGameObject].tag == "sigma")
             {
-                Money += 3;
+                Money += MoneyToBuild[0]/2;
             }
             if (AllMushromGameObject[numberOfGameObject].tag == "alpha")
             {
-                Money += 5;
+                Money += MoneyToBuild[1] / 2;
             }
             if (AllMushromGameObject[numberOfGameObject].tag == "omega")
             {
-                Money += 6;
+                Money += MoneyToBuild[2] / 2;
             }
             if (AllMushromGameObject[numberOfGameObject].tag == "gamma")
             {
-                Money += 20;
+                Money += MoneyToBuild[3] / 2;
             }
             if (AllMushromGameObject[numberOfGameObject].tag == "beta-male")
             {
-                Money += 25;
+                Money += MoneyToBuild[4] / 2;
             }
             if (AllMushromGameObject[numberOfGameObject].tag == "beta-fem")
             {
-                Money += 36;
+                Money += MoneyToBuild[5] / 2;
             }
             
             Destroy(AllMushromGameObject[numberOfGameObject]);

@@ -6,46 +6,14 @@ using UnityEngine.Tilemaps;
 public class Mushrom : MonoBehaviour
 {
     List<Vector3Int> AroundPosition= new List<Vector3Int>();
-    public float Pref;
-    public float Prov;
+    public float income;
     public float Cost;
+    public GameObject[] GoodMushroom;
+    public GameObject[] BadMushroom;
     private Tilemap map;
-    void BasicCheck()
-    {
-        if (gameObject.tag == "sigma")
-        {
-            Pref = 2;
-            Prov = 1;
-        }
-        if (gameObject.tag == "alpha")
-        {
-            Pref = 0;
-            Prov = 2;
-        }
-        if (gameObject.tag == "omega")
-        {
-            Pref = 6;
-            Prov = 3;
-        }
-        if (gameObject.tag == "gamma")
-        {
-            Pref = 0;
-            Prov = 5;
-        }
-        if (gameObject.tag == "beta-male")
-        {
-            Pref = 10;
-            Prov = 5;
-        }
-        if (gameObject.tag == "beta-fem")
-        {
-            Pref = 0;
-            Prov = 5;
-        }
-    }
+
     void ChangeIncome()
     {
-        BasicCheck();
         GameObject CheckTupeOfMushrum;
         int numberOfGameObject=0;
         GetPositionArround(map.WorldToCell(gameObject.transform.position));
@@ -77,15 +45,14 @@ public class Mushrom : MonoBehaviour
         while (true)
         {
             ChangeIncome();
-            field.Money += Mathf.Round(Pref);
-            field.Money -= Mathf.Round(Prov);
+            field.Money += Mathf.Round(income);
             yield return new WaitForSeconds(3);
-            Debug.Log(Pref);
+            Debug.Log(income);
         }
     }
     private void Update()
     {
-        if (field.Money >= 1000)
+        if (field.Money >= 10000)
         {
             GameObject.Find("Win").SetActive(true);
         }
