@@ -7,61 +7,225 @@ public class Mushrom : MonoBehaviour
 {
     List<Vector3Int> AroundPosition= new List<Vector3Int>();
     public float income;
+    private float startIncome;
     public float Cost;
-    public GameObject[] GoodMushroom;
-    public GameObject[] BadMushroom;
+    public int Procent;
+    public TileBase BasicTile;
+    public TileBase DeadTile;
+    public List<string> GoodMushroom;
+    public List<string> BadMushroom;
     private Tilemap map;
+    private GameObject CheckTupeOfMushrum;
+    public GameObject Sigma;
 
     void ChangeIncome()
     {
-        GameObject CheckTupeOfMushrum;
+        Procent = 100;
+        income = startIncome;
         int numberOfGameObject=0;
         GetPositionArround(map.WorldToCell(gameObject.transform.position));
         for (int i = 0; i < AroundPosition.Count; i++)
         {
-            Debug.Log("Test3");
             if (field.AllMushrom.Contains(AroundPosition[i]))
             {
-                Debug.Log("Test4");
                 for (int io = 0; io < field.AllMushrom.Count; io++)
                 {
-                    if (field.AllMushrom == AroundPosition)
+                    if (field.AllMushrom[io] == AroundPosition[i])
+                    {
                         numberOfGameObject = io;
-                    break;
+                        break;
+                    }
+                        
                 }
                 CheckTupeOfMushrum = field.AllMushromGameObject[numberOfGameObject];
+                switch (gameObject.tag)
+                {
+                    case "sigma":
+                        sigma();
+                        break;
 
-                if (field.AllMushromGameObject[numberOfGameObject].tag == "sigma")
-                { }
+                    case "alpha":
+                        alpha();
+                        break;
+
+                    case "omega":
+                        omega();
+                        break;
+
+                    case "gamma":
+                        gamma();
+                        break;
+
+                    case "beta-male":
+                        bettaMale();
+                        break;
+
+                    case "beta-fem":
+                        bettaFemale();
+                        break;
+                }
+
 
             }
         }
     }
+    void sigma()
+    {
+        if (GoodMushroom.Contains(CheckTupeOfMushrum.tag))
+        {
+            CheckTupeOfMushrum.GetComponent<Mushrom>().Procent += 25;
+        }
+        if (BadMushroom.Contains(CheckTupeOfMushrum.tag))
+        {
 
-    // Update is called once per frame
+            Procent -= 10000;
+            CheckTupeOfMushrum.GetComponent<Mushrom>().Procent -= 10000;
+        }
+    }
+    void alpha()
+    {
+
+        if (GoodMushroom.Contains(CheckTupeOfMushrum.tag))
+        {
+            CheckTupeOfMushrum.GetComponent<Mushrom>().Procent += 25;
+        }
+        if (BadMushroom.Contains(CheckTupeOfMushrum.tag))
+        {
+            CheckTupeOfMushrum.GetComponent<Mushrom>().Procent -= 25;
+        }
+    }
+    void omega()
+    {
+        if (GoodMushroom.Contains(CheckTupeOfMushrum.tag))
+        {
+            CheckTupeOfMushrum.GetComponent<Mushrom>().Procent += 100;
+        }
+        if (BadMushroom.Contains(CheckTupeOfMushrum.tag))
+        {
+            CheckTupeOfMushrum.GetComponent<Mushrom>().Procent -= 25;
+        }
+    }
+    void gamma()
+    {
+        if (GoodMushroom.Contains(CheckTupeOfMushrum.tag))
+        {
+            CheckTupeOfMushrum.GetComponent<Mushrom>().Procent += 25;
+        }
+        if (BadMushroom.Contains(CheckTupeOfMushrum.tag))
+        {
+            CheckTupeOfMushrum.GetComponent<Mushrom>().Procent -= 100;
+        }
+    }
+    void bettaMale()
+    {
+        if (GoodMushroom.Contains(CheckTupeOfMushrum.tag))
+        {
+            CheckTupeOfMushrum.GetComponent<Mushrom>().Procent += 20;
+        }
+        if (BadMushroom.Contains(CheckTupeOfMushrum.tag))
+        {
+            CheckTupeOfMushrum.GetComponent<Mushrom>().Procent -= 45;
+        }
+    }
+    void bettaFemale()
+    {
+        if (GoodMushroom.Contains(CheckTupeOfMushrum.tag))
+        {
+            CheckTupeOfMushrum.GetComponent<Mushrom>().Procent += 25;
+        }
+    }
 
     IEnumerator PrefPerSecond()
     {
         while (true)
         {
             ChangeIncome();
-            field.Money += Mathf.Round(income);
             yield return new WaitForSeconds(3);
+
+            income = startIncome * (Procent / 100);
+            if (income < 0)
+                income = 0;
+            field.Money += Mathf.Round(income);
             Debug.Log(income);
         }
     }
-    private void Update()
+    IEnumerator SigmaSpawn()
     {
-        if (field.Money >= 10000)
+        while (true)
         {
-            GameObject.Find("Win").SetActive(true);
+            yield return new WaitForSeconds(3);
+            for (int i = 0; i < AroundPosition.Count; i++)
+            {
+                if (field.AllMushrom.Contains(AroundPosition[i]) == false && map.GetTile(AroundPosition[i]) == BasicTile)
+                {
+                    int r = Random.Range(0, 100);
+                    if (r >= 70)
+                    {
+                        field.AllMushromGameObject.Add(Instantiate(Sigma, new Vector3(map.CellToWorld(AroundPosition[i]).x + 1.1f, map.CellToWorld(AroundPosition[i]).y + 1.1f, -1), Quaternion.identity));
+                        field.AllMushrom.Add(AroundPosition[i]);
+                    }
+                    break;
+                }
+
+            }
         }
     }
     void Start()
     {
+        startIncome = income;
         map = GameObject.Find("Tilemap").GetComponent<Tilemap>();
         ChangeIncome();
         StartCoroutine(PrefPerSecond());
+        if (gameObject.tag=="alpha")
+        {
+            StartCoroutine(SigmaSpawn());
+        }
+        if (gameObject.tag== "beta-male")
+        {
+            int kill=0;
+            GetPositionArround(map.WorldToCell(gameObject.transform.position));
+            for (int i = 0; i < AroundPosition.Count; i++)
+            {
+                if (map.GetTile(AroundPosition[i])==BasicTile && field.AllMushrom.Contains(AroundPosition[i]) == false)
+                {
+                    kill += 1;
+                    map.SetTile(AroundPosition[i], DeadTile);
+                }
+                if (kill == 2)
+                    break;
+            }
+            if (kill<2)
+            {
+                for (int i = 0; i < AroundPosition.Count; i++)
+                {
+                    if(map.GetTile(AroundPosition[i]) == BasicTile)
+                    {
+                        kill += 1;
+                        map.SetTile(AroundPosition[i], DeadTile);
+                        if (field.AllMushrom.Contains(AroundPosition[i]))
+                        {
+                            if (field.AllMushrom.Contains(AroundPosition[i]))
+                            {
+                                for (int io = 0; io < field.AllMushrom.Count; io++)
+                                {
+                                    if (field.AllMushrom[io] == AroundPosition[i])
+                                    {
+                                        
+                                        Destroy(field.AllMushromGameObject[io]);
+                                        field.AllMushrom.Remove(field.AllMushrom[io]);
+                                        field.AllMushromGameObject.Remove(field.AllMushromGameObject[io]);
+                                        break;
+                                    }
+                                    
+                                }
+                            }
+                        }
+                    }
+                    if (kill == 2)
+                        break;
+                }
+            }
+        }
     }
     void QuitGame()
     {

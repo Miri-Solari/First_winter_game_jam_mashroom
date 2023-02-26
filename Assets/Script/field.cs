@@ -8,17 +8,19 @@ using TMPro;
 public class field : MonoBehaviour
 {
     public TileBase BasicTile;
-    private Tilemap map;
     public TMP_Text Money_output;
-    public static float Money=170;
+    public static float Money=1170;
     public GameObject[] Mushrom;
     public static List<Vector3Int> AllMushrom = new List<Vector3Int>();
     public static List<GameObject> AllMushromGameObject = new List<GameObject>();
+    public int[] MoneyToBuild;
+    public int CostOfGrass;
+
+    private Tilemap map;
     private Camera mainCamera;
-    public int[] MoneyToBuild ;
     private Vector3Int CellToBuild;
     private bool readyToBuild = false;
-    void Start()
+    void Start() 
     {
         map = GameObject.Find("Tilemap").GetComponent<Tilemap>();
         mainCamera = Camera.main;
@@ -32,7 +34,7 @@ public class field : MonoBehaviour
 
                 Vector3 MousePosition = mainCamera.ScreenToWorldPoint(Input.mousePosition); 
                 Vector3Int cellPosition = map.WorldToCell(MousePosition);
-                if(map.GetTile(cellPosition) == BasicTile)
+                if(map.GetTile(cellPosition) == BasicTile || Float.AllWhater.Contains(cellPosition))
                 {
                     map.SetColor(CellToBuild, Color.white);
                     CellToBuild = cellPosition;
@@ -105,6 +107,21 @@ public class field : MonoBehaviour
             AllMushromGameObject.Remove(AllMushromGameObject[numberOfGameObject]);
         }
 
+    }
+    public void BuyGrass()
+    {
+        if (map.GetTile(CellToBuild)!=BasicTile)
+        {
+            if (Money>= CostOfGrass)
+            {
+                map.SetColor(CellToBuild, Color.white);
+                map.SetTile(CellToBuild, BasicTile);
+                Float.AllRemainGrass.Add(CellToBuild);
+                Float.AllWhater.Remove(CellToBuild);
+                Money -= CostOfGrass;
+            }
+
+        }
     }
     public void red()
     {

@@ -181,7 +181,7 @@ GameObject:
   - component: {fileID: 1399325094771712174}
   m_Layer: 0
   m_Name: betta-female
-  m_TagString: beta-male
+  m_TagString: beta-fem
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -235,9 +235,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a46e2e8726cc1c4a8fc457d1f2dbfc0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Pref: 0
-  Prov: 0
-  Cost: 0
+  income: 3
+  Cost: 220
+  Procent: 0
+  BasicTile: {fileID: 11400000, guid: 891d0c83332f38e4ea33b74817785b58, type: 2}
+  DeadTile: {fileID: 11400000, guid: aa07a1ccf900f54429d06ec33af30ab9, type: 2}
+  GoodMushroom:
+  - sigma
+  - omega
+  - gamma
+  BadMushroom: []
+  Sigma: {fileID: 1201887708660984, guid: 9b78c16ac067ef440b5967931621f6f8, type: 3}
 --- !u!1 &1902970825850792
 GameObject:
   m_ObjectHideFlags: 0
