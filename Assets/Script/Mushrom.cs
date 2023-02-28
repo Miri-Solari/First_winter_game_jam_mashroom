@@ -204,20 +204,16 @@ public class Mushrom : MonoBehaviour
                         map.SetTile(AroundPosition[i], DeadTile);
                         if (field.AllMushrom.Contains(AroundPosition[i]))
                         {
-                            if (field.AllMushrom.Contains(AroundPosition[i]))
+                            for (int io = 0; io < field.AllMushrom.Count; io++)
                             {
-                                for (int io = 0; io < field.AllMushrom.Count; io++)
+                                if (field.AllMushrom[io] == AroundPosition[i])
                                 {
-                                    if (field.AllMushrom[io] == AroundPosition[i])
-                                    {
-                                        
-                                        Destroy(field.AllMushromGameObject[io]);
-                                        field.AllMushrom.Remove(field.AllMushrom[io]);
-                                        field.AllMushromGameObject.Remove(field.AllMushromGameObject[io]);
-                                        break;
-                                    }
-                                    
-                                }
+
+                                    Destroy(field.AllMushromGameObject[io]);
+                                    field.AllMushrom.Remove(field.AllMushrom[io]);
+                                    field.AllMushromGameObject.Remove(field.AllMushromGameObject[io]);
+                                    break;
+                                }       
                             }
                         }
                     }

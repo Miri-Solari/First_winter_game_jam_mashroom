@@ -38,27 +38,36 @@ public class Float : MonoBehaviour
             yield return new WaitForSeconds(time);
             if (time > 1)
                 time -= 1;
-            int r = Random.Range(0, AllRemainGrass.Count-1);
-            Debug.Log(AllRemainGrass.Count - 1);
-            Debug.Log(r);
-            map.SetTile(AllRemainGrass[r], Whater);
-            if (field.AllMushrom.Contains(AllRemainGrass[r]))
+            if (AllRemainGrass.Count - 1>0)
             {
-                int index = 0;
-                for (int i = 0; i < field.AllMushrom.Count; i++)
+                int r = Random.Range(0, AllRemainGrass.Count - 1);
+                Debug.Log(AllRemainGrass.Count - 1);
+                Debug.Log(r);
+                map.SetTile(AllRemainGrass[r], Whater);
+                if (field.AllMushrom.Contains(AllRemainGrass[r]))
                 {
-                    if (field.AllMushrom[i] == AllGrass[r])
+                    int index = 0;
+                    for (int i = 0; i < field.AllMushrom.Count; i++)
                     {
-                        index = i;
-                        break;
+                        if (field.AllMushrom[i] == AllGrass[r])
+                        {
+                            index = i;
+                            break;
+                        }
                     }
+                    Destroy(field.AllMushromGameObject[index]);
+                    field.AllMushromGameObject.RemoveAt(index);
+                    field.AllMushrom.RemoveAt(index);
                 }
-                Destroy(field.AllMushromGameObject[index]);
-                field.AllMushromGameObject.RemoveAt(index);
-                field.AllMushrom.RemoveAt(index);
+                AllWhater.Add(AllRemainGrass[r]);
+                AllRemainGrass.RemoveAt(r);
             }
-            AllWhater.Add(AllRemainGrass[r]);
-            AllRemainGrass.RemoveAt(r);
+            else
+            {
+                gameObject.GetComponent<End>().ShowScore();
+                StopAllCoroutines();
+            }
+
         }
     }
 }

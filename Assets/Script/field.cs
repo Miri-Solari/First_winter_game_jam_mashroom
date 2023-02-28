@@ -14,6 +14,7 @@ public class field : MonoBehaviour
     public static List<Vector3Int> AllMushrom = new List<Vector3Int>();
     public static List<GameObject> AllMushromGameObject = new List<GameObject>();
     public int[] MoneyToBuild;
+    public static int[] SaveMoneyToBuild;
     public int CostOfGrass;
 
     private Tilemap map;
@@ -22,6 +23,7 @@ public class field : MonoBehaviour
     private bool readyToBuild = false;
     void Start() 
     {
+        SaveMoneyToBuild = MoneyToBuild;
         map = GameObject.Find("Tilemap").GetComponent<Tilemap>();
         mainCamera = Camera.main;
     }
@@ -41,7 +43,6 @@ public class field : MonoBehaviour
                     map.SetTileFlags(cellPosition, TileFlags.None);
                     map.SetColor(cellPosition, Color.gray);
                 }
-            
         }
     }
     public void ButtonBuild(int index)
@@ -78,31 +79,33 @@ public class field : MonoBehaviour
             Debug.Log(numberOfGameObject); Debug.Log(AllMushrom.Count);
             AllMushrom.Remove(CellToBuild);
             map.SetColor(CellToBuild, Color.white);
-            if (AllMushromGameObject[numberOfGameObject].tag == "sigma")
+            switch (AllMushromGameObject[numberOfGameObject].tag)
             {
-                Money += MoneyToBuild[0]/2;
+                case "sigma":
+                    Money += MoneyToBuild[0] / 2;
+                    break;
+
+                case "alpha":
+                    Money += MoneyToBuild[1] / 2;
+                    break;
+
+                case "omega":
+                    Money += MoneyToBuild[2] / 2;
+                    break;
+
+                case "gamma":
+                    Money += MoneyToBuild[3] / 2;
+                    break;
+
+                case "beta-male":
+                    Money += MoneyToBuild[4] / 2;
+                    break;
+
+                case "beta-fem":
+                    Money += MoneyToBuild[5] / 2;
+                    break;
             }
-            if (AllMushromGameObject[numberOfGameObject].tag == "alpha")
-            {
-                Money += MoneyToBuild[1] / 2;
-            }
-            if (AllMushromGameObject[numberOfGameObject].tag == "omega")
-            {
-                Money += MoneyToBuild[2] / 2;
-            }
-            if (AllMushromGameObject[numberOfGameObject].tag == "gamma")
-            {
-                Money += MoneyToBuild[3] / 2;
-            }
-            if (AllMushromGameObject[numberOfGameObject].tag == "beta-male")
-            {
-                Money += MoneyToBuild[4] / 2;
-            }
-            if (AllMushromGameObject[numberOfGameObject].tag == "beta-fem")
-            {
-                Money += MoneyToBuild[5] / 2;
-            }
-            
+
             Destroy(AllMushromGameObject[numberOfGameObject]);
             AllMushromGameObject.Remove(AllMushromGameObject[numberOfGameObject]);
         }
